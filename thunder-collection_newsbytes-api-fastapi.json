@@ -1,0 +1,113 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "newsbytes-api-fastapi",
+    "dateExported": "2023-10-28T14:55:50.506Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "8921b0af-6469-4c91-8a00-1d45dcec763a",
+            "name": "auth",
+            "containerId": "",
+            "created": "2023-10-28T14:51:30.065Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "99196e5c-bab6-4d93-8200-44d90531ff65",
+            "name": "sources",
+            "containerId": "",
+            "created": "2023-10-28T14:51:30.066Z",
+            "sortNum": 20000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "a24e0c01-4872-4b07-90a4-4934e73265ee",
+            "colId": "fa1fca1b-08f4-4a33-87de-229948c95ae9",
+            "containerId": "",
+            "name": "stories",
+            "url": "/",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-10-28T14:51:30.065Z",
+            "modified": "2023-10-28T14:51:30.065Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f7085c1e-59c4-48cb-909b-bdf8b9024378",
+            "colId": "fa1fca1b-08f4-4a33-87de-229948c95ae9",
+            "containerId": "8921b0af-6469-4c91-8a00-1d45dcec763a",
+            "name": "register",
+            "url": "/auth/register/",
+            "method": "POST",
+            "sortNum": 15000,
+            "created": "2023-10-28T14:51:30.067Z",
+            "modified": "2023-10-28T14:51:30.067Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "983d67f4-b6f6-4cfd-9cdc-dfbdf7f01722",
+            "colId": "fa1fca1b-08f4-4a33-87de-229948c95ae9",
+            "containerId": "8921b0af-6469-4c91-8a00-1d45dcec763a",
+            "name": "login",
+            "url": "/auth/login",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-10-28T14:51:30.066Z",
+            "modified": "2023-10-28T14:51:30.066Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "217e4ca2-82ee-4647-a15f-62ee770e064b",
+            "colId": "fa1fca1b-08f4-4a33-87de-229948c95ae9",
+            "containerId": "99196e5c-bab6-4d93-8200-44d90531ff65",
+            "name": "get all sources",
+            "url": "/sources",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-10-28T14:51:30.068Z",
+            "modified": "2023-10-28T14:51:30.068Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ae772837-3c12-41eb-b267-6b42ea0194fb",
+            "colId": "fa1fca1b-08f4-4a33-87de-229948c95ae9",
+            "containerId": "99196e5c-bab6-4d93-8200-44d90531ff65",
+            "name": "set resources",
+            "url": "/sources",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-10-28T14:51:30.069Z",
+            "modified": "2023-10-28T14:51:30.069Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "83a7d43e-bd65-43ee-a8f2-dabc545000e0",
+            "colId": "fa1fca1b-08f4-4a33-87de-229948c95ae9",
+            "containerId": "99196e5c-bab6-4d93-8200-44d90531ff65",
+            "name": "get source item",
+            "url": "/sources/progscrape",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-10-28T14:51:30.070Z",
+            "modified": "2023-10-28T14:51:30.070Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ],
+    "settings": {
+        "options": {
+            "baseUrl": "http://localhost:8000"
+        }
+    }
+}
