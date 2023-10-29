@@ -1,7 +1,9 @@
 from datetime import datetime
 
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from .auth import auth_router
 from .schemas import News, Story
@@ -28,9 +30,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+# ------------------------- Validation error messages ------------------------ #
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    error_messages = []
+    for error in exc.errors():
+        field_name = error["loc"][-1]
+        error_message = error["msg"]
+        error_messages.append(f"{field_name}: {error_message}")
+    return JSONResponse({"error": ", ".join(error_messages)}, status_code=400)
+
+
 # ---------------------------------- Routers --------------------------------- #
 app.include_router(auth_router)
 app.include_router(sources_router)
+
 
 # ------------------------------ Main endpoints ------------------------------ #
 @app.get(

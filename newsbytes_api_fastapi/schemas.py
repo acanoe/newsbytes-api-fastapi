@@ -18,3 +18,9 @@ class Story(BaseModel):
 class News(BaseModel):
     stories: list[Story]
     tags: list[str]
+
+class ErrorResponse(BaseModel):
+    error: str
+
+class MessageResponse(BaseModel):
+    message: str
