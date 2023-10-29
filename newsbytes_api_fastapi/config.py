@@ -1,7 +1,7 @@
 import secrets
-from typing import Any, Optional, Union
+from typing import Optional, Union
 
-from pydantic import AnyHttpUrl, PostgresDsn, validator
+from pydantic import AnyHttpUrl, PostgresDsn, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -17,10 +17,10 @@ class Settings(BaseSettings):
     DB_PORT: int = 5432
     DB_NAME: str = "newsbytes"
     DB_USER: str = "postgres"
-    DB_PASSWORD: str = "postgres"
-    DB_DSN: Optional[PostgresDsn] = None
+    DB_PASS: str = "postgres"
 
-    @validator("CORS_ORIGINS", pre=True)
+    @field_validator("CORS_ORIGINS")
+    @classmethod
     def assemble_cors_origins(cls, v: Union[str, list[str]]) -> Union[list[str], str]:
         """
         Assemble CORS_ORIGINS from comma-separated string or list of strings
@@ -32,20 +32,9 @@ class Settings(BaseSettings):
             return v
         raise ValueError(v)
 
-    @validator("DB_DSN", pre=True)
-    def assemble_db_dsn(
-        cls, v: Optional[str], values: dict[str, Any]
-    ) -> Optional[PostgresDsn]:
-        if isinstance(v, str):
-            return PostgresDsn.build(
-                scheme="postgresql",
-                user=values.get("DB_USER"),
-                password=values.get("DB_PASSWORD"),
-                host=values.get("DB_HOST"),
-                port=values.get("DB_PORT"),
-                path=f"/{values.get('DB_NAME')}",
-            )
-        return v
+    @property
+    def DB_DSN(self) -> Optional[PostgresDsn]:
+        return f"postgresql://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
 
 settings = Settings()

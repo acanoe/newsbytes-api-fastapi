@@ -6,8 +6,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from .auth import auth_router
+from .config import settings
 from .schemas import News, Story
 from .sources import sources_router
+
+print(settings.dict())
 
 # ---------------------------------- The app --------------------------------- #
 app = FastAPI(
@@ -17,14 +20,9 @@ app = FastAPI(
 )
 
 # ---------------------------- CORS configuration ---------------------------- #
-origins = [
-    "http://localhost",
-    "http://localhost:8000",
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
