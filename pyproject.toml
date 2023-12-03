@@ -14,6 +14,9 @@ sqlalchemy = "^2.0.22"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 pydantic-settings = "^2.0.3"
+psycopg2-binary = "^2.9.9"
+celery = "^5.3.4"
+requests = "^2.31.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -28,6 +31,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poe.tasks]
 run = "uvicorn newsbytes_api_fastapi.main:app --reload"
+run-celery = "celery -A newsbytes_api_fastapi.tasks worker -l INFO"
 test = "pytest -s"
 lint = "black --check ."
 format = "black ."

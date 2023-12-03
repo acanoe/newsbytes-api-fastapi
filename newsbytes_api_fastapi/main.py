@@ -1,18 +1,27 @@
-from datetime import datetime
+from typing import Optional
 
-from fastapi import FastAPI
+from celery import Celery
+from fastapi import Depends, FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from sqlalchemy.orm import Session
 
 from .auth import auth_router
 from .config import settings
-from .schemas import News, Story
+from .database import Base, engine
+from .dependencies import get_db
+from .models import stories
+from .schemas import News
 from .sources import sources_router
 
-print(settings.dict())
+# ---------------------------- Database migration ---------------------------- #
+Base.metadata.create_all(bind=engine)
 
-# ---------------------------------- The app --------------------------------- #
+# -------------------------------- Celery app -------------------------------- #
+celery_app = Celery("worker", broker="amqp://rabbitmq:rabbitmq@localhost:5672")
+
+# -------------------------------- FastAPI app ------------------------------- #
 app = FastAPI(
     title="Newsbytes API",
     description="FastAPI based API for newsbytes",
@@ -52,25 +61,11 @@ app.include_router(sources_router)
     response_model_exclude_none=True,
     response_model_exclude_unset=True,
 )
-def get_all_stories():
+def get_all_stories(tags: Optional[list[str]] = None, db: Session = Depends(get_db)):
+    news_stories = stories.get_by_tag(db, tags=tags) if tags else stories.get_multi(db)
+    tags = set([story.tags for story in news_stories])
+
     return News(
-        stories=[
-            Story(
-                id=1,
-                date=datetime.now(),
-                title="Title",
-                href="https://example.com",
-                hnews="http://example.com",
-                tags=["tag1", "tag2"],
-            ),
-            Story(
-                id=2,
-                date=datetime.now(),
-                title="Title",
-                href="https://example.com",
-                lobsters="http://example.com",
-                tags=["tag1", "tag2"],
-            ),
-        ],
-        tags=["tag1", "tag2"],
+        stories=news_stories,
+        tags=list(tags),
     )
